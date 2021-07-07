@@ -15,9 +15,28 @@ class DataLayer {
 		$this->connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // déclenchement d'exception en cas d'erreur
 		$this->connexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC); // fetch renvoie une table associative
         // réglage d'un schéma par défaut :
-        $this->connexion->query('set search_path=tchat');
+        $this->connexion->query('set search_path=blog');
 		
-    }
+	}
+	
+	function getcontent(){
+		$res = <<<EOD
+            select * from "posts" 
+            order by id_post limit 2 
+            
+        EOD;
+        
+        $stmt = $this->connexion->prepare($res);
+        
+        
+        $stmt->execute();
+        //$stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $res1 = $stmt->fetchAll();
+        $count = $stmt->fetchColumn();
+        
+        
+        return $res1;
+	}
     
     
 
