@@ -158,6 +158,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     return target;
   };
+  
 
   function each(collection, callback) {
     var l = collection.length,

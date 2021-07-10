@@ -37,6 +37,46 @@ class DataLayer {
         
         return $res1;
 	}
+
+	function getposts(){
+		$res = <<<EOD
+            select * from "posts" 
+            
+            
+        EOD;
+        
+        $stmt = $this->connexion->prepare($res);
+        
+        
+        $stmt->execute();
+        //$stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $res1 = $stmt->fetchAll();
+        $count = $stmt->fetchColumn();
+        
+        
+        return $res1;
+    }
+    
+    function getposts_id(int $id){
+		$res = <<<EOD
+            select * from "posts" 
+            where id_post=:id
+            
+        EOD;
+        
+        $stmt = $this->connexion->prepare($res);
+        
+        
+        
+        $stmt->bindValue(":id",$id);
+        $stmt->execute();
+        //$stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $res1 = $stmt->fetch();
+        
+        
+        
+        return $res1;
+	}
     
     
 
