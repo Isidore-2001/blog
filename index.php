@@ -16,7 +16,10 @@
       <script type="text/javascript" src="js/materialize.js"></script>
   <?php 
   include_once("./topbar.php");
-  include_once("services/getcontent.php")
+  include_once("services/getcontent.php");
+  
+
+
   ?>
 <div class="container"><h1>Dernier Post</h1>
 
@@ -35,9 +38,9 @@ foreach($res as $i){
       <span class="card-title activator grey-text text-darken-4"><?php echo $i['titre']?><i class="material-icons right">more_vert</i></span>
 
       <div class="footer">
-            <?php echo $i['date'] ?> par <?php echo $i['write'] ?>
+            <?php echo $i['date'] ?> par <?php echo $i['name'] ?>
           </div>
-      <p><a href="#" class="waves-effect waves-light btn">Voir l'article</a></p>
+      <p><a href="post.php?id_post=<?php echo $i['id_post'] ?>" class="waves-effect waves-light btn">Voir l'article</a></p>
       
     </div>
     <div class="card-reveal">

@@ -19,6 +19,7 @@ create table blog.posts(
     id_post  serial,
     titre varchar(250) not null,
     content varchar(10000) not null,
+    name varchar(250) not null,
     write varchar(250) not null,
     date DATE default current_date,
     posted integer default 0,
@@ -37,19 +38,14 @@ create table blog.commentaires(
     date DATE default current_date,
     seen integer default 0,
     comment varchar(250) not null,
+    id_post integer references blog.posts,
     primary key(id_commentaires)
 
 
 
 
 );
-create table blog.comment(
-    id_admin integer references blog.admin,
-    id_commentaires integer references blog.commentaires,
-    primary key(id_admin, id_commentaires)
 
-
-);
 create table blog.posted(
     id_admin integer references blog.admin,
     id_post integer references blog.posts,
@@ -58,8 +54,8 @@ create table blog.posted(
 
 );
 
-INSERT INTO blog.posts (titre, content, write,  date, posted, image) VALUES
-('Le framework MaterializeCSS', 'Material Design\r\nCréé et conçu par Google, le Material 
+INSERT INTO blog.posts (titre, content,name, write,  date, posted, image) VALUES
+('Le framework MaterializeCSS', 'Material Design \r\n Créé et conçu par Google, le Material 
 Design est un langage de conception qui combine les principes classiques d''un design réussi
  ainsi que l''innovation et la technologie. Le but de Google et de développer une technique de
   conception pour une expérience utilisateur unifiée au travers de leurs produits sur n''importe
@@ -75,7 +71,7 @@ Design est un langage de conception qui combine les principes classiques d''un d
             fois un retour et de la familiarité, ceci permet à l''utilisateur de s’immerger aisément
              dans une technologie nouvelle. Le mouvement est cohérent et continu en plus de donner à
               l''utilisateur des informations supplémentaires sur les élements et
-     trasnformations.', 'admin@localhost', '2016-01-08 20:55:14', 1,'3.jpg'),
+     trasnformations.', 'isidore','admin@localhost', '2016-01-08 20:55:14', 1,'image.jpg'),
 ('Article avec image d''un bureau', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec laoreet magna eget iaculis sollicitudin.
  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mi nisi, aliquet non viverra eget,
   hendrerit eleifend enim. Praesent finibus tortor at scelerisque varius. Etiam malesuada eros lobortis 
@@ -105,4 +101,7 @@ Design est un langage de conception qui combine les principes classiques d''un d
           , vel blandit sem. Donec posuere est vitae nibh suscipit, ut porttitor sem malesuada. 
           Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
            Mauris at mauris at turpis egestas egestas. Aenean congue ullamcorper dolor sed varius.
-            Integer nec malesuada est. Integer viverra mattis orci, at aliquet enim dictum nec.', 'admin@localhost', '2016-01-08 20:54:46', 1,'5.jpg');
+            Integer nec malesuada est. Integer viverra mattis orci, at aliquet enim dictum nec.', 'isidore','admin@localhost', '2016-01-08 20:54:46', 1,'image.jpg');
+
+INSERT INTO blog.commentaires (email, name, comment, id_post) VALUES 
+('amevigbe41@gmail.com', 'isidore', 'Voilà cest écris', 1);

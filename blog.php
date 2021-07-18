@@ -6,7 +6,7 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
-
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -48,10 +48,15 @@ foreach($res as $i){
                           </div>
                     
                       <div class="col s12 m6 l4">
-                      <div class ="card-image waves-effect waves-block waves-light">
-                        <img class="circle responsive-img" src="images/<?php echo $i['image']?>"> 
+                      
+                        <img class="circle materialboxed" width="450" src="images/<?php echo $i['image']?>"> 
+                        <script>
+                        $(document).ready(function(){
+    $('.materialboxed').materialbox();
+  });
+                        </script>
                         <a href="post.php?id_post=<?php echo $i['id_post'] ?>" class="waves-effect waves-light btn">Voir l'article</a>
-                      </div>
+                      
                       </div>
                   </div>
                   

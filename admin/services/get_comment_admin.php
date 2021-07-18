@@ -1,6 +1,5 @@
 <?php 
 
-
 spl_autoload_register(function ($className) {
     include ("php/{$className}.class.php");
  });
@@ -8,19 +7,14 @@ spl_autoload_register(function ($className) {
 set_include_path('..'.PATH_SEPARATOR);
 require_once('php/initDataLayer.php');
 
+
  
-try {
   
   require_once('php/fonctions_parms.php');
    // à compléter
 
-   
-   $res = $data->getcontent();
+   $mes = "";
+   $res = $data->get_comment3();
 
-}
-
-   catch(PDOException $e){
-       echo $e;
-   }
-
+  
 ?>

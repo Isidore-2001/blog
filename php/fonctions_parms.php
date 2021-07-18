@@ -42,8 +42,8 @@
      if ( ! isset($_REQUEST[$name]) || $_REQUEST[$name]==="" ){
       if ($defaultValue !== NULL)
         return $defaultValue;
-      else if ($mandatory)
-        throw new ParmsException("$name absent");
+      /*else if ($mandatory)
+        throw new ParmsException("$name absent");*/
       else
         return NULL;
      }
