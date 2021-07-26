@@ -30,12 +30,11 @@ function sendForm1(ev){ // form event listener
 
 
     function sendForm2(){ // form event listener
-      window.setInterval(()=>{
       
         
         fetchFromJson('services/getcomment.php') 
        .then(makemessagesItems);
-      }, 500);
+      
       
       }
     
@@ -70,6 +69,7 @@ function sendForm1(ev){ // form event listener
           name.value = "";
           comment.value = "";
           commentaire.value = "";
+          sendForm2();
           }
         else
            {

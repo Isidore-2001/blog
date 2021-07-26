@@ -9,24 +9,38 @@ class DataLayer {
 	 * @param $DSNFileName : file containing DSN 
 	 */
 	function __construct(string $DSNFileName){
-		$dsn = "uri:$DSNFileName";
-		$this->connexion = new PDO($dsn);
-		// paramètres de fonctionnement de PDO :
-		$this->connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // déclenchement d'exception en cas d'erreur
-		$this->connexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC); // fetch renvoie une table associative
-        // réglage d'un schéma par défaut :
-        $this->connexion->query('set search_path=blog');
+		
+            try {
+                
+                $this->connexion = new PDO('mysql:host=codingschool-togo.com;dbname=u391525461_amevigbe','u391525461_amevigbe','Kanoli2014');
+              } 
+              catch ( Exception $e ) {
+                echo "Connection à la BDD impossible : ", $e->getMessage();
+                
+              }
+              
+              
+           
+            // paramètres de fonctionnement de PDO :
+            $this->connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // déclenchement d'exception en cas d'erreur
+            $this->connexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC); // fetch renvoie une table associative
+            // réglage d'un schéma par défaut :*/
+            
+            /*$this->connexion->query('*/
+            
+        
 		
 	}
 	
 	function getcontent(){
 		$res = <<<EOD
-            select * from "posts" 
+            select * from posts 
             order by id_post limit 2 
             
         EOD;
         
-        $stmt = $this->connexion->prepare($res);
+        try{
+            $stmt = $this->connexion->prepare($res);
         
         
         $stmt->execute();
@@ -35,12 +49,17 @@ class DataLayer {
         $count = $stmt->fetchColumn();
         
         
-        return $res1;
+        return $res1;}
+        
+        catch (PDOException $e){
+                
+            var_dump($e);
+        }
 	}
 
 	function getposts(){
 		$res = <<<EOD
-            select * from "posts" 
+            select * from posts
             
             
         EOD;
@@ -58,12 +77,12 @@ class DataLayer {
     }
     function getposts2(){
 		$res = <<<EOD
-            select count(id_post) from "posts" 
+            select count(id_post) from posts 
             
             
         EOD;
         
-        $stmt = $this->connexion->prepare($res);
+        try{$stmt = $this->connexion->prepare($res);
         
         
         $stmt->execute();
@@ -72,12 +91,16 @@ class DataLayer {
         $count = $stmt->fetchColumn();
         
         
-        return $res1;
+        return $res1;}
+        catch (PDOException $e){
+                
+            var_dump($e);
+        }
     }
     
     function getposts_id(int $id){
 		$res = <<<EOD
-            select * from "posts" 
+            select * from posts 
             where id_post=:id
             
         EOD;
@@ -99,7 +122,7 @@ class DataLayer {
 
     function get_comment(int $id){
         $res = <<<EOD
-            select * from "commentaires" 
+            select * from commentaires 
             where commentaires.id_post=:id
             
             
@@ -127,7 +150,7 @@ class DataLayer {
 
     function get_comment3(){
         $res = <<<EOD
-            select count(id_commentaires) from "commentaires" 
+            select count(id_commentaires) from commentaires
             
             
             
@@ -155,7 +178,7 @@ class DataLayer {
 
     function get_comment2(int $id){
         $res = <<<EOD
-            select * from "commentaires" 
+            select * from commentaires
             where commentaires.id_post=:id order by commentaires.id_commentaires asc
             
             
@@ -182,7 +205,7 @@ class DataLayer {
     }
     function get_comment4(){
         $res = <<<EOD
-        select * from "commentaires" join "posts" on commentaires.id_post = posts.id_post where commentaires.seen = 0
+        select * from commentaires join posts on commentaires.id_post = posts.id_post where commentaires.seen = 0
             
             
         EOD;
@@ -210,7 +233,7 @@ class DataLayer {
 
     function insert_comment(string $email, string $name, string $comment, int $post){
         $sql = <<<EOD
-        insert into "commentaires" (email, name, comment, id_post)
+        insert into commentaires (email, name, comment, id_post)
         values (:email, :name, :comment, :id_post)
 EOD;
         
@@ -234,7 +257,7 @@ EOD;
     }
     function insert_comment2(int $id1=NULL, int $id2=NULL){
         $sql = <<<EOD
-        insert into "comment" (id_post, id_commentaires)
+        insert into comment (id_post, id_commentaires)
         values (:id_post, :id_commentaires) 
 EOD;
         
@@ -256,9 +279,34 @@ EOD;
         
     }
 
+
+
+    function delete_comment(?int $id){
+        $sql = <<<EOD
+        DELETE FROM commentaires WHERE id_commentaires=:id
+EOD;
+        try{
+        $stmt = $this->connexion->prepare($sql);
+        
+        
+        $stmt->bindValue(":id", $id);
+        
+        $stmt->execute();
+
+
+
+        return TRUE;
+    }
+    catch (PDOException $e){
+        
+        return $e;
+    }
+
+}
+
     function get_admin_number(){
         $sql = <<<EOD
-                select count(id_admin) from "admin"
+                select count(id_admin) from admin
 EOD;
 
         $stmt = $this->connexion->prepare($sql);
@@ -279,6 +327,30 @@ else{
     return FALSE;
 }
     }
+
+    function view_comment(int $id){
+        $sql = <<<EOD
+        UPDATE commentaires SET seen = 1 WHERE id_commentaires=:id
+EOD;
+        try{
+        $stmt = $this->connexion->prepare($sql);
+        
+        
+        $stmt->bindValue(":id", $id);
+        
+        $stmt->execute();
+
+
+
+        return TRUE;
+    }
+    catch (PDOException $e){
+        
+        return $e;
+    }
+    }
+
+
     
     
 

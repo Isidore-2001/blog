@@ -1,26 +1,23 @@
 <?php 
+set_include_path('../..'.PATH_SEPARATOR);
 
-set_include_path('..'.PATH_SEPARATOR);
+
 spl_autoload_register(function ($className) {
     include ("php/{$className}.class.php");
  });
 
 
 require_once('php/initDataLayer.php');
+require_once('php/common_service.php');
+
 
  
-try {
   
   require_once('php/fonctions_parms.php');
    // à compléter
+    $id = $_GET['id'];
+   $mes = "";
+   $res = $data->delete_comment($id);
 
-   
-   $res = $data->getcontent();
-   
-}
-
-   catch(PDOException $e){
-       echo $e;
-   }
-
+  produceResult($res);
 ?>

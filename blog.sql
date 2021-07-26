@@ -1,6 +1,6 @@
-create schema blog;
 
-create table blog.admin(
+
+create table admin(
     id_admin  serial,
     nom varchar(250) not null,
     prenom varchar(250) not null,
@@ -15,12 +15,12 @@ create table blog.admin(
 
 );
 
-create table blog.posts(
+create table posts(
     id_post  serial,
     titre varchar(250) not null,
     content varchar(10000) not null,
     name varchar(250) not null,
-    write varchar(250) not null,
+    ecrit varchar(250) not null,
     date DATE default current_date,
     posted integer default 0,
     image varchar(250) not null,
@@ -31,7 +31,7 @@ create table blog.posts(
 
 
 
-create table blog.commentaires(
+create table commentaires(
     id_commentaires serial,
     email varchar(250) not null,
     name varchar(250) not null, 
@@ -46,7 +46,7 @@ create table blog.commentaires(
 
 );
 
-create table blog.posted(
+create table posted(
     id_admin integer references blog.admin,
     id_post integer references blog.posts,
     primary key(id_admin, id_post)
@@ -54,7 +54,7 @@ create table blog.posted(
 
 );
 
-INSERT INTO blog.posts (titre, content,name, write,  date, posted, image) VALUES
+INSERT INTO posts (titre, content,name, ecrit,  date, posted, image) VALUES
 ('Le framework MaterializeCSS', 'Material Design \r\n Créé et conçu par Google, le Material 
 Design est un langage de conception qui combine les principes classiques d''un design réussi
  ainsi que l''innovation et la technologie. Le but de Google et de développer une technique de
@@ -103,5 +103,5 @@ Design est un langage de conception qui combine les principes classiques d''un d
            Mauris at mauris at turpis egestas egestas. Aenean congue ullamcorper dolor sed varius.
             Integer nec malesuada est. Integer viverra mattis orci, at aliquet enim dictum nec.', 'isidore','admin@localhost', '2016-01-08 20:54:46', 1,'image.jpg');
 
-INSERT INTO blog.commentaires (email, name, comment, id_post) VALUES 
+INSERT INTO commentaires (email, name, comment, id_post) VALUES 
 ('amevigbe41@gmail.com', 'isidore', 'Voilà cest écris', 1);

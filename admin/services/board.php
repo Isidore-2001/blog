@@ -4,8 +4,8 @@
 spl_autoload_register(function ($className) {
     include ("php/{$className}.class.php");
  });
+ set_include_path('..'.PATH_SEPARATOR);
 
-set_include_path('..'.PATH_SEPARATOR);
 require_once('php/initDataLayer.php');
 
 

@@ -5,7 +5,7 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
-
+      
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -13,8 +13,14 @@
     <body>
 
       <!--JavaScript at end of body for optimized loading-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
       <script type="text/javascript" src="js/materialize.js"></script>
+      
+      
   <?php 
+  session_name('synthese_isidore');
+  session_start();
+  
   include_once("./topbar.php");
   include_once("services/board.php")
 
@@ -27,7 +33,7 @@
                   <div class="card-content green white-text">
                           <span class="card-title">Publications</span>
                                           
-                          <h4><?php echo $res["count"] ?></h4>
+                          <h4><?php echo $res['count(id_post)'] ?></h4>
                           </div>
                   </div>
           </div>
@@ -37,7 +43,7 @@
                       <div class="card-content blue white-text">
                           <span class="card-title">Commentaires</span>
                                           
-                          <h4><?php echo $res["count"] ?></h4>
+                          <h4><?php echo $res["count(id_commentaires)"] ?></h4>
                       </div>
               </div>
           </div>
@@ -47,11 +53,29 @@
                       <div class="card-content red white-text">
                           <span class="card-title">Adminstrateur</span>
                                           
-                          <h4><?php echo $res["count"] ?></h4>
+                          <h4><?php echo $res["count(id_admin)"] ?></h4>
                       </div>
               </div>
           </div>
     </div>
+    <?php spl_autoload_register(function ($className) {
+    include ("php/{$className}.class.php");
+ });
+
+set_include_path('..'.PATH_SEPARATOR);
+require_once('php/initDataLayer.php');
+
+
+ 
+  
+  require_once('php/fonctions_parms.php');
+   // à compléter
+
+   $mes = "";
+   $res = $data->get_comment4();
+   
+  ?>
+
     <h5>Commentaires non lu </h5>
     <div class="row">
     <div class="col s12">
@@ -63,36 +87,18 @@
               <th>Action</th>
           </tr>
         </thead>
-
-        <tbody>
-          <tr>
-            <td>Alvin</td>
-            <td>Eclair</td>
-            <td>
-            
-            <a href="" class="btn-floating btn-large waves-effect waves-light green"><i class="material-icons">done</i></a>
-            <a href="" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></a>
-            <a href="" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">list</i></a>
-            </td>
-          </tr>
-          <tr>
-            <td>Alan</td>
-            <td>Jellybean</td>
-            <td><a href="" class="btn-floating btn-large waves-effect waves-light green"><i class="material-icons">done</i></a>
-            <a href="" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></a>
-            <a href="" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">list</i></a></td>
-          </tr>
-          <tr>
-            <td>Jonathan</td>
-            <td>Lollipop</td>
-            <td><a href="" class="btn-floating btn-large waves-effect waves-light green"><i class="material-icons">done</i></a>
-            <a href="" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></a>
-            <a href="" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">list</i></a></td>
-          </tr>
+        <tbody id="table">
+        
+      
+        
         </tbody>
       </table>
     </div>
     </div>
+    <script src="js/fetchUtils.js"> </script>
+    <script type="text/javascript" src="js/delete_coment.js"></script>
+    
+     
     </div>
     </body>
   </html>
