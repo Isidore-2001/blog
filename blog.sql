@@ -7,7 +7,7 @@ create table admin(
     role varchar(250) not null,
     token varchar(250) not null,
     email varchar(250) not null,
-    password varchar(250) not null, 
+    password varchar(250), 
     
     
     primary key (id_admin)

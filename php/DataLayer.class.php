@@ -350,7 +350,102 @@ EOD;
     }
     }
 
+    function get_modo_not_password(){
+        $sql = <<<EOD
+        SELECT * FROM admin WHERE role != admin and password = NULL 
+EOD;
+        try{
+        $stmt = $this->connexion->prepare($sql);
+        
+        
+        
+        
+        $stmt->execute();
 
+        $res1 = $stmt->fetchAll();
+
+
+        return $res1;
+    }
+    catch (PDOException $e){
+        
+        return $e;
+    }
+    }
+
+    function get_modo_have_password(){
+        $sql = <<<EOD
+        SELECT * FROM admin WHERE role != admin and password != NULL 
+EOD;
+        try{
+        $stmt = $this->connexion->prepare($sql);
+        
+        
+        
+        
+        $stmt->execute();
+
+        $res1 = $stmt->fetchAll();
+
+
+        return $res1;
+    }
+    catch (PDOException $e){
+        
+        return $e;
+    }
+    }
+
+    function add_modo(string $email, string $nom, string $prenom
+    ){
+        $sql = <<<EOD
+        insert into admin (nom, prenom, role, token, email)
+        values (:nom, :prenom, :role, :token, :email)  
+EOD;
+        try{
+        $stmt = $this->connexion->prepare($sql);
+        $stmt->bindValue(":email", $email);
+        $stmt->bindValue(":nom", $nom);
+        $stmt->bindValue(":prenom", $prenom);
+        $stmt->bindValue(":token", $token);
+       
+        
+        
+        
+        $stmt->execute();
+
+        
+
+
+        return TRUE;
+    }
+    catch (PDOException $e){
+        
+        return $e;
+    }
+    }
+
+    function update_password(int $id, string $password){
+        $sql = <<<EOD
+        UPDATE admin SET password =: password WHERE id_admin=:id
+EOD;
+        try{
+        $stmt = $this->connexion->prepare($sql);
+        
+        
+        $stmt->bindValue(":id_admin", $id);
+        
+        $stmt->execute();
+
+
+
+        return TRUE;
+    }
+    catch (PDOException $e){
+        
+        return $e;
+    }
+    }
     
     
 
