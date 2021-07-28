@@ -446,6 +446,15 @@ EOD;
         return $e;
     }
     }
+
+
+    function token(){
+        $lettre =  "AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn123456789";
+        $nbre = rand(0, strlen($lettre));
+        $chaine = substr($lettre, 0, $nbre);
+        
+        return str_shuffle($chaine);
+    }
     
     
 

@@ -34,7 +34,7 @@ delete1[i].addEventListener("click", sendForm4)
   }
 
   let j = 0;
-while (i < view1.length){
+while (j < view1.length){
 
 view1[j].addEventListener("click", sendForm5) 
     
@@ -54,8 +54,9 @@ function modal(){
       
         fetchFromJson('services/get_comment_admin.php')
        .then(makemessagesItems)
-       .then(modal)
        .then(sendForm3)
+       .then(modal)
+       
        
       
       }

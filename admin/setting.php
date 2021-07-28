@@ -59,7 +59,7 @@
                     <label for="email">Adresse email</label>
                 </div>
                 <div class="input-field col s12">
-                    <input type="email" id="email" name="email"/>
+                    <input type="email" id="email1" name="email1"/>
                     <label for="email">Répeté l'email</label>
                 </div>
                 <center>
