@@ -16,7 +16,7 @@ require_once('php/common_service.php');
    $nom = checkString('name');
    $prenom = checkString('prenom');
    $email = checkString('email');
-   $email_2 = $_POST['email1'];
+   $email_2 = checkString('email1');
    
    produceResult($res);
 ?>
