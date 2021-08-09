@@ -17,12 +17,14 @@ try {
    // à compléter
 
    $mes = "";
-   $res = $data->get_comment(intval($_SESSION['id']));
+   $res = $data->get_comment2(intval($_SESSION['id']));
+   
    if ($res !== NULL){
-      foreach ($res as $i){
+      
+      foreach ($res as $k){
       $mes.="
-      <strong>".$i['name']."(".$i['date'].")"."</strong>
-      <p  >".$i['comment']."</p>
+      <strong>".$k['name']."(".$k['date'].")"."</strong>
+      <p>".$k['comment']."</p>
       ";
       
    }

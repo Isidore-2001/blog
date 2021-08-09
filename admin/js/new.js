@@ -1,4 +1,3 @@
-
 window.addEventListener('load',initForm);
 /*window.addEventListener("DOMContentLoaded", (event) => {
   sendForm2;
@@ -10,7 +9,7 @@ function initForm(){
   /**window.setInterval(,500);**/
   
   //sendForm2();
-  sendForm2();
+  document.forms.new.addEventListener("submit", sendForm2);
   
   
 
@@ -44,29 +43,19 @@ view1[j].addEventListener("click", sendForm5)
   
 
 }
-function modal(){
-  $(document).ready(function(){
-    $('.modal').modal();
-  });}
 
 
-    function sendForm2(){ // form event listener
-      
-        fetchFromJson('services/get_comment_admin.php')
-        
+    function sendForm2(ev){ // form event listener
+        ev.preventDefault();
+        let args= new FormData(this);
+        fetchFromJson('services/new.php',{method:'post',body:args})
        .then(makemessagesItems)
-       .then(modal)
-       .then(sendForm3)
-       
-       
        
       
       }
 
       
-
-      
-      function sendForm5(ev){ // form event listener
+      /*function sendForm5(ev){ // form event listener
       
         ev.preventDefault();
         fetchFromJson(this.getAttribute('id')) 
@@ -85,29 +74,25 @@ function modal(){
         sendForm2();
         
         
-          }
-
-
+          }*/
     function makemessagesItems(answer){
       
         
-        let comment = document.getElementById('table');
+        let errorText = document.getElementById('erreur');
         
         console.log(answer.status);
         if (answer.status == "ok"){
           
-          comment.innerHTML =  answer.result;
+          location.href = "confirm_password.php"
           }
         else
            {
-              errorText.style.display = "block";
-              errorText.textContent = answer.message;
+              
+              errorText.innerHTML = answer.message;
             
           }
         
       }
-
-      
 
       function makemessagesItems2(answer){
       
@@ -123,13 +108,5 @@ function modal(){
           }
         
       }
-
-      
-      
-
-     
-      
-
-      
 
       

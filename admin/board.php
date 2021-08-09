@@ -21,10 +21,19 @@
   session_name('synthese_isidore');
   session_start();
   
-  include_once("./topbar.php");
-  include_once("services/board.php")
+  
+  
 
+  if ($_SESSION['identite'] === NULL){
+    header("Location: login.php");
+  }
+  
+
+  include_once("./topbar.php");
+  include_once("services/board.php");
   ?>
+
+
   <div class="container">
   <h4>Tableau de Bord</h4>
   <div class="row">

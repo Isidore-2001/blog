@@ -14,23 +14,26 @@ require_once('php/common_service.php');
   require_once('php/fonctions_parms.php');
    // à compléter
    
-   $email = checkString('email');
+   $password1 = checkString('password1');
    $password = checkString('password');
-   if($email === NULL && $password === NULL){
+   if($password1 === NULL || $password === NULL){
        produceError("Saississez tous les champs");
    }
 
-   else{
-     $result = $data->get_modo($email);
-       if ($password === $result['token'] && $email === $result['email']){
-           $_SESSION['ident'] = $email;
-           produceResult($_SESSION['ident']);
+   else if ($password1 !== NULL && $password !== NULL){
+     
+       if ($password != $password1){
+        produceError("Saississez tous les champs correctement");
+           
            
        }
-
        else{
-        produceError("le mot de passe ou l'email est incorrect");
+        $res= $data->update_password($_SESSION['ident'], $password );
+        $_SESSION['password'] = $password;
+        produceResult($res);
        }
+
+       
    }
    
 

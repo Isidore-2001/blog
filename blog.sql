@@ -12,7 +12,6 @@ create table admin(
     
     primary key (id_admin)
 
-
 );
 
 create table posts(

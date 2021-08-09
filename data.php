@@ -27,20 +27,20 @@
   
   set_include_path('..'.PATH_SEPARATOR);
   require_once('php/initDataLayer.php');
-  $res = $data->get_comment(intval($_GET['id_post']));
+  $res = $data->get_comment2(intval($_GET['id_post']));
   
     
 ?>
 
     <blockquote id="commentaire">
     
-              <?php if (!$res){
+              <?php if ($res === NULL){
                 echo "Soyez le premier à commenter";
               }
               else{
  
               foreach($res as $i) {?>
-              <strong id="name"><?php echo $i['name']?>(<?php echo $i['date'] ?>)<strong>
+              <strong id="name"><?php echo $i['name']?>( <?php echo $i['date'] ?> )<strong>
               <p  id="comment"><?php echo $i['comment']?></p>
               <?php } }?>
     </blockquote>

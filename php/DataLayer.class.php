@@ -34,8 +34,8 @@ class DataLayer {
 	
 	function getcontent(){
 		$res = <<<EOD
-            select * from posts 
-            order by id_post limit 2 
+            select * from posts where posted = 1
+            order by id_post desc limit 2 
             
         EOD;
         
@@ -59,7 +59,7 @@ class DataLayer {
 
 	function getposts(){
 		$res = <<<EOD
-            select * from posts
+            select * from posts where posted = 1
             
             
         EOD;
@@ -75,6 +75,31 @@ class DataLayer {
         
         return $res1;
     }
+
+    function getposts_admin(){
+		$res = <<<EOD
+            select * from posts
+            
+            
+        EOD;
+        try{
+        $stmt = $this->connexion->prepare($res);
+        
+        
+        $stmt->execute();
+        //$stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $res1 = $stmt->fetchAll();
+        $count = $stmt->fetchColumn();
+        
+        
+        return $res1;}
+        catch (PDOException $e){
+                
+            var_dump($e);
+        }
+    }
+
+
     function getposts2(){
 		$res = <<<EOD
             select count(id_post) from posts 
@@ -98,6 +123,10 @@ class DataLayer {
         }
     }
     
+
+    
+
+
     function getposts_id(int $id){
 		$res = <<<EOD
             select * from posts 
@@ -135,7 +164,7 @@ class DataLayer {
         $stmt->bindValue(":id",$id);
         $stmt->execute();
         //$stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $res1 = $stmt->fetchAll();
+        $res1 = $stmt->fetch();
         
         
         if ($res1 != NULL){
@@ -304,6 +333,30 @@ EOD;
 
 }
 
+
+function delete_article(?int $id){
+    $sql = <<<EOD
+    DELETE FROM posts WHERE id_posts=:id
+EOD;
+    try{
+    $stmt = $this->connexion->prepare($sql);
+    
+    
+    $stmt->bindValue(":id", $id);
+    
+    $stmt->execute();
+
+
+
+    return TRUE;
+}
+catch (PDOException $e){
+    
+    return $e;
+}
+
+}
+
     function get_admin_number(){
         $sql = <<<EOD
                 select count(id_admin) from admin
@@ -352,7 +405,7 @@ EOD;
 
     function get_modo_not_password(){
         $sql = <<<EOD
-        SELECT * FROM admin WHERE role != admin and password = NULL 
+        SELECT * FROM admin
 EOD;
         try{
         $stmt = $this->connexion->prepare($sql);
@@ -363,6 +416,29 @@ EOD;
         $stmt->execute();
 
         $res1 = $stmt->fetchAll();
+
+
+        return $res1;
+    }
+    catch (PDOException $e){
+        
+        return $e;
+    }
+    }
+
+    function get_modo(string $email){
+        $sql = <<<EOD
+        SELECT * FROM admin WHERE  email=:email order by id_admin desc
+EOD;
+        try{
+        $stmt = $this->connexion->prepare($sql);
+        
+        
+        $stmt->bindValue(":email", $email);
+        
+        $stmt->execute();
+
+        $res1 = $stmt->fetch();
 
 
         return $res1;
@@ -397,17 +473,21 @@ EOD;
     }
 
     function add_modo(string $email, string $nom, string $prenom
-    ){
+    , string $token){
         $sql = <<<EOD
         insert into admin (nom, prenom, role, token, email)
         values (:nom, :prenom, :role, :token, :email)  
 EOD;
         try{
         $stmt = $this->connexion->prepare($sql);
-        $stmt->bindValue(":email", $email);
         $stmt->bindValue(":nom", $nom);
         $stmt->bindValue(":prenom", $prenom);
+        $stmt->bindValue(":role", 'modo');
         $stmt->bindValue(":token", $token);
+        $stmt->bindValue(":email", $email);
+        
+        
+        
        
         
         
@@ -425,15 +505,16 @@ EOD;
     }
     }
 
-    function update_password(int $id, string $password){
+    function update_password(string $email, string $password){
         $sql = <<<EOD
-        UPDATE admin SET password =: password WHERE id_admin=:id
+        UPDATE admin SET password=:password WHERE email=:email
 EOD;
         try{
         $stmt = $this->connexion->prepare($sql);
         
+        $stmt->bindValue(":password", $password);
+        $stmt->bindValue(":email", $email);
         
-        $stmt->bindValue(":id_admin", $id);
         
         $stmt->execute();
 
@@ -443,7 +524,7 @@ EOD;
     }
     catch (PDOException $e){
         
-        return $e;
+        return $e->getMessage();
     }
     }
 
@@ -456,6 +537,92 @@ EOD;
         return str_shuffle($chaine);
     }
     
+
+    function insert_post(string $titre, int $posted, string $image,string $name, string $email, string $content){
+        $sql = <<<EOD
+        INSERT INTO posts (titre, content,name, ecrit, posted, image) VALUES
+        (:titre, :content, :name, :ecrit, :posted, :image)
+EOD;
+
+        try{
+            $stmt = $this->connexion->prepare($sql);
+            $stmt->bindValue(":titre", $titre);
+            $stmt->bindValue(":content", $content);
+            $stmt->bindValue(":name", $name);
+            $stmt->bindValue(":ecrit", $email);
+            $stmt->bindValue(":posted", $posted
+        );
+        $stmt->bindValue(":image", $image);
+        $stmt->execute();
+        return TRUE;
+            
+            
+        }
+        catch(PDOException $e){
+            return $e->getMessage();
+        }
+
+    }
+
+    function update_content(int $id, string $content, string $titre, ?int $posted=0){
+        $res = <<<EOD
+            update posts set titre=:titre, content=:content, posted=:posted where id_post=:id
+            
+        EOD;
+        
+        try{
+            $stmt = $this->connexion->prepare($res);
+            $stmt->bindValue(":id", $id);
+        $stmt->bindValue(":titre", $titre);
+        $stmt->bindValue(":content", $content);
+        $stmt->bindValue(":posted", $posted);
+        
+        $stmt->execute();
+        //$stmt->setFetchMode(PDO::FETCH_ASSOC);
+        
+        
+        
+        return TRUE;
+    
+    }
+        
+        catch (PDOException $e){
+                
+            return $e->getMessage();
+        }
+     
+    }
+
+
+    function delete_content(int $id){
+        $res = <<<EOD
+        DELETE FROM posts WHERE id_post=:id
+            
+        EOD;
+        
+        try{
+            $stmt = $this->connexion->prepare($res);
+            $stmt->bindValue(":id", $id);
+        
+        
+        $stmt->execute();
+        //$stmt->setFetchMode(PDO::FETCH_ASSOC);
+        
+        
+        
+        return TRUE;
+    
+    }
+        
+        catch (PDOException $e){
+                
+            return $e->getMessage();
+        }
+     
+    }
+
+    
+
     
 
 

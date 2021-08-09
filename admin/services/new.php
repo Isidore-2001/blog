@@ -13,11 +13,15 @@ require_once('php/common_service.php');
   
   require_once('php/fonctions_parms.php');
    // à compléter
-   
+   $mes = '';
    $email = checkString('email');
    $password = checkString('password');
-   if($email === NULL && $password === NULL){
-       produceError("Saississez tous les champs");
+   if($email === NULL || $password === NULL){
+       produceError('<div class="card red">
+       <div class="card-content white-text">
+            Saissisez tous les champs
+       </div>
+   </div>');
    }
 
    else{
@@ -29,7 +33,11 @@ require_once('php/common_service.php');
        }
 
        else{
-        produceError("le mot de passe ou l'email est incorrect");
+        produceError('<div class="card red">
+       <div class="card-content white-text">
+            Les identifiants sont incorrects
+       </div>
+   </div>');
        }
    }
    

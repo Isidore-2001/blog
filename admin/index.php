@@ -17,6 +17,21 @@
   <?php 
   include_once("./topbar.php");
   
+  session_name('synthese_isidore');
+  session_start();
+  
+  include_once("./topbar.php");
+  include_once("services/board.php");
+  
+
+  if ($_SESSION['identite'] !== NULL){
+    header("Location: board.php");
+  }
+  else{
+    header("Location: login.php");
+  }
+  
+  
 
   ?>
 
